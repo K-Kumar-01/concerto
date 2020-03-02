@@ -29,6 +29,7 @@ Version 0.82.7 {7794da684d1222b5819b5eb76690660a} 2020-04-08
 - Added Concerto API
 - Remove notion of system table
 - Remove user ability to change system model
+- Add instanceof alternatives to Factory and Serializer
 - Update JsDoc for ModelManager.addModelFiles
 
 Version 0.82.5 {d4d49fabba1c6ce465c446e2dccad488} 2019-11-10
