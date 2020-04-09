@@ -26,7 +26,8 @@
 
 Version 0.82.7 {7794da684d1222b5819b5eb76690660a} 2020-04-08
 - Add Logger API
-- Added Concerto API
+- Add Concerto API
+- Remove System Models APIs
 - Remove notion of system table
 - Remove user ability to change system model
 - Add instanceof alternatives to Factory and Serializer
