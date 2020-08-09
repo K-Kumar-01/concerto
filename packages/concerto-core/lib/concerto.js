@@ -77,13 +77,11 @@ class Concerto {
             throw new Error('Input object does not have a $class attribute.');
         }
 
-        const typeDeclaration = this.modelManager.getType(obj.$class);
-
-        if (!typeDeclaration) {
+        try {
+            return this.modelManager.getType(obj.$class);
+        } catch (err) {
             throw new Error(`Type ${obj.$class} is not declared in the model manager`);
         }
-
-        return typeDeclaration;
     }
 
     /**
@@ -165,16 +163,11 @@ class Concerto {
      * in the model manager
      */
     fromURI(uri) {
-        let uriComponents;
-        try {
-            uriComponents = URIJS.parse(uri);
-        } catch (err) {
-            throw new Error('Invalid URI: ' + uri);
-        }
+        const uriComponents = URIJS.parse(uri);
 
         const scheme = uriComponents.protocol;
-        if (scheme && scheme !== RESOURCE_SCHEME) {
-            throw new Error('Invalid URI scheme: ' + uri);
+        if (!scheme || scheme !== RESOURCE_SCHEME) {
+            throw new Error('Invalid URI scheme: ' + scheme);
         }
         if (uriComponents.username || uriComponents.password || uriComponents.port || uriComponents.query) {
             throw new Error('Invalid resource URI format: ' + uri);

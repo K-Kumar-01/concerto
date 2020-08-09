@@ -147,6 +147,14 @@ describe('concerto', () => {
             result.typeDeclaration.getName().should.equal('Person');
             result.id.should.equal('123456789');
         });
+
+        it('should fail on a non resource scheme', () => {
+            (() => concerto.fromURI('foo://something')).should.throw(/Invalid URI scheme: foo/);
+        });
+
+        it('should fail on a non valid resource URI', () => {
+            (() => concerto.fromURI('resource://localhost:8008')).should.throw(/Invalid resource URI format/);
+        });
     });
 
     describe('#getTypeDeclaration', () => {
@@ -182,7 +190,7 @@ describe('concerto', () => {
 
             (() => {
                 concerto.getTypeDeclaration(obj);
-            }).should.throw(/Namespace is not defined for type Foo/);
+            }).should.throw(/Type Foo is not declared in the model manager/);
         });
     });
 
@@ -317,6 +325,186 @@ describe('concerto', () => {
             };
 
             concerto.validate(obj);
+        });
+
+        it('should fail for number instead of string', () => {
+            const obj = {
+                $class : 'org.accordproject.test.TestAsset',
+                id: '001',
+                types: {
+                    $class : 'org.accordproject.test.Types',
+                    stringValue: 1,
+                    stringArrayValue : ['a', 'b', 'c'],
+                    longValue: 1,
+                    integerValue: 10,
+                    doubleValue: 5.0,
+                    booleanValue: true,
+                    departmentValue : 'ENGINEERING',
+                    departmentArrayValue : ['ENGINEERING', 'HR'],
+                    relationshipValue: 'resource:org.accordproject.test.Person#ABC',
+                    relationshipArrayValue: ['resource:org.accordproject.test.Person#ABC', 'resource:org.accordproject.test.Person#DEF'],
+                    dateTimeValue: '2020-03-31',
+                    conceptValue : {
+                        $class : 'org.accordproject.test.Product',
+                        sku: 'abc',
+                        description: 'widget'
+                    }
+                }
+            };
+
+            (() => {
+                concerto.validate(obj);
+            }).should.throw(/Model violation in instance org.accordproject.test.TestAsset#001 field stringValue has value 1 \(number\) expected type String/);
+        });
+
+        it('should fail for string instead of number', () => {
+            const obj = {
+                $class : 'org.accordproject.test.TestAsset',
+                id: '001',
+                types: {
+                    $class : 'org.accordproject.test.Types',
+                    stringValue: 'a',
+                    stringArrayValue : ['a', 'b', 'c'],
+                    longValue: '1',
+                    integerValue: 10,
+                    doubleValue: 5.0,
+                    booleanValue: true,
+                    departmentValue : 'ENGINEERING',
+                    departmentArrayValue : ['ENGINEERING', 'HR'],
+                    relationshipValue: 'resource:org.accordproject.test.Person#ABC',
+                    relationshipArrayValue: ['resource:org.accordproject.test.Person#ABC', 'resource:org.accordproject.test.Person#DEF'],
+                    dateTimeValue: '2020-03-31',
+                    conceptValue : {
+                        $class : 'org.accordproject.test.Product',
+                        sku: 'abc',
+                        description: 'widget'
+                    }
+                }
+            };
+
+            (() => {
+                concerto.validate(obj);
+            }).should.throw(/Model violation in instance org.accordproject.test.TestAsset#001 field longValue has value "1" \(string\) expected type Long/);
+        });
+
+        it('should fail for string instead of Boolean', () => {
+            const obj = {
+                $class : 'org.accordproject.test.TestAsset',
+                id: '001',
+                types: {
+                    $class : 'org.accordproject.test.Types',
+                    stringValue: 'a',
+                    stringArrayValue : ['a', 'b', 'c'],
+                    longValue: 1,
+                    integerValue: 10,
+                    doubleValue: 5.0,
+                    booleanValue: 'true',
+                    departmentValue : 'ENGINEERING',
+                    departmentArrayValue : ['ENGINEERING', 'HR'],
+                    relationshipValue: 'resource:org.accordproject.test.Person#ABC',
+                    relationshipArrayValue: ['resource:org.accordproject.test.Person#ABC', 'resource:org.accordproject.test.Person#DEF'],
+                    dateTimeValue: '2020-03-31',
+                    conceptValue : {
+                        $class : 'org.accordproject.test.Product',
+                        sku: 'abc',
+                        description: 'widget'
+                    }
+                }
+            };
+
+            (() => {
+                concerto.validate(obj);
+            }).should.throw(/Model violation in instance org.accordproject.test.TestAsset#001 field booleanValue has value "true" \(string\) expected type Boolean/);
+        });
+
+        it('should fail for boolean instead of DateTime', () => {
+            const obj = {
+                $class : 'org.accordproject.test.TestAsset',
+                id: '001',
+                types: {
+                    $class : 'org.accordproject.test.Types',
+                    stringValue: 'a',
+                    stringArrayValue : ['a', 'b', 'c'],
+                    longValue: 1,
+                    integerValue: 10,
+                    doubleValue: 5.0,
+                    booleanValue: true,
+                    departmentValue : 'ENGINEERING',
+                    departmentArrayValue : ['ENGINEERING', 'HR'],
+                    relationshipValue: 'resource:org.accordproject.test.Person#ABC',
+                    relationshipArrayValue: ['resource:org.accordproject.test.Person#ABC', 'resource:org.accordproject.test.Person#DEF'],
+                    dateTimeValue: false,
+                    conceptValue : {
+                        $class : 'org.accordproject.test.Product',
+                        sku: 'abc',
+                        description: 'widget'
+                    }
+                }
+            };
+
+            (() => {
+                concerto.validate(obj);
+            }).should.throw(/Model violation in instance org.accordproject.test.TestAsset#001 field dateTimeValue has value false \(boolean\) expected type DateTime/);
+        });
+
+        it('should fail for symbol instead of Boolean', () => {
+            const obj = {
+                $class : 'org.accordproject.test.TestAsset',
+                id: '001',
+                types: {
+                    $class : 'org.accordproject.test.Types',
+                    stringValue: 'a',
+                    stringArrayValue : ['a', 'b', 'c'],
+                    longValue: 1,
+                    integerValue: 10,
+                    doubleValue: 5.0,
+                    booleanValue: Symbol(),
+                    departmentValue : 'ENGINEERING',
+                    departmentArrayValue : ['ENGINEERING', 'HR'],
+                    relationshipValue: 'resource:org.accordproject.test.Person#ABC',
+                    relationshipArrayValue: ['resource:org.accordproject.test.Person#ABC', 'resource:org.accordproject.test.Person#DEF'],
+                    dateTimeValue: '2020-03-31',
+                    conceptValue : {
+                        $class : 'org.accordproject.test.Product',
+                        sku: 'abc',
+                        description: 'widget'
+                    }
+                }
+            };
+
+            (() => {
+                concerto.validate(obj);
+            }).should.throw(/Model violation in instance org.accordproject.test.TestAsset#001 field booleanValue has value undefined \(symbol\) expected type Boolean/);
+        });
+
+        it('should fail for boolean instead of enum array', () => {
+            const obj = {
+                $class : 'org.accordproject.test.TestAsset',
+                id: '001',
+                types: {
+                    $class : 'org.accordproject.test.Types',
+                    stringValue: 'a',
+                    stringArrayValue : ['a', 'b', 'c'],
+                    longValue: 1,
+                    integerValue: 10,
+                    doubleValue: 5.0,
+                    booleanValue: true,
+                    departmentValue : 'ENGINEERING',
+                    departmentArrayValue : false,
+                    relationshipValue: 'resource:org.accordproject.test.Person#ABC',
+                    relationshipArrayValue: ['resource:org.accordproject.test.Person#ABC', 'resource:org.accordproject.test.Person#DEF'],
+                    dateTimeValue: '2020-03-31',
+                    conceptValue : {
+                        $class : 'org.accordproject.test.Product',
+                        sku: 'abc',
+                        description: 'widget'
+                    }
+                }
+            };
+
+            (() => {
+                concerto.validate(obj);
+            }).should.throw(/Model violation in instance org.accordproject.test.TestAsset#001 field departmentArrayValue has value false \(boolean\) expected type Department\[\]/);
         });
 
         it('should fail with extra property', () => {

@@ -470,8 +470,8 @@ describe('ResourceValidator', function () {
             }).should.throw(/property has value com.doge \(doge\)/);
         });
 
-        it('should not fail if strigify fails', () => {
-            // Crazy object to force JSON.strigify to throw
+        it('should not fail if stringify fails', () => {
+            // Crazy object to force JSON.stringify to throw
             let obj = {};
             obj.a = obj;
 

@@ -37,7 +37,7 @@ participant Employee extends Person {
     o String[] pets optional
 }
 
-participant Manager extends Person {
+participant Manager extends Employee {
 }
 
 participant Customer extends Person {

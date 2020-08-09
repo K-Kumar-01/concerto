@@ -541,9 +541,6 @@ class ClassDeclaration extends Decorated {
      */
     toString() {
         let superType = '';
-        if (this.superType) {
-            superType = ' super=' + this.superType;
-        }
         return 'ClassDeclaration {id=' + this.getFullyQualifiedName() + superType + ' enum=' + this.isEnum() + ' abstract=' + this.isAbstract() + '}';
     }
 
