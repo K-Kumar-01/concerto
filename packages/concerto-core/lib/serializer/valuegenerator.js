@@ -15,7 +15,7 @@
 'use strict';
 
 const loremIpsum = require('lorem-ipsum');
-const Moment = require('moment-mini');
+// const Moment = require('moment-mini');
 
 /**
  * Empty value generator.
@@ -27,7 +27,8 @@ class EmptyValueGenerator {
      * @private
      */
     constructor() {
-        this.currentDate = new Moment();
+        // this.currentDate = new Moment();
+        this.currentDate = new Date();
     }
 
     /**

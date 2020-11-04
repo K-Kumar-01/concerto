@@ -20,7 +20,7 @@ const ModelManager = require('../../lib/modelmanager');
 const TypedStack = require('../../lib/serializer/typedstack');
 const ModelUtil = require('../../lib/modelutil');
 const Util = require('../composer/systemmodelutility');
-const Moment = require('moment-mini');
+// const Moment = require('moment-mini');
 
 let chai = require('chai'), should = chai.should();
 const sinon = require('sinon');
@@ -151,12 +151,12 @@ describe('JSONGenerator', () => {
         });
 
         it('should convert a date time object to ISOString', () => {
-            let date = Moment.parseZone('Wed, 09 Aug 1995 00:00:00 GMT');
+            let date = new Date('Wed, 09 Aug 1995 00:00:00 GMT');
             jsonGenerator.convertToJSON({ getType: () => { return 'DateTime'; } }, date).should.equal('1995-08-09T00:00:00.000Z');
             ergoJsonGenerator.convertToJSON({ getType: () => { return 'DateTime'; } }, date).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]').should.equal('1995-08-09T00:00:00.000Z');
         });
         it('should convert a date time object to ISOString in a different timezone', () => {
-            let date = Moment.parseZone('Wed, 09 Aug 1995 00:00:00 -0500');
+            let date = new Date('Wed, 09 Aug 1995 00:00:00 -0500');
             jsonGenerator.convertToJSON({ getType: () => { return 'DateTime'; } }, date).should.equal('1995-08-09T00:00:00.000-05:00');
             ergoJsonGenerator.convertToJSON({ getType: () => { return 'DateTime'; } }, date).format('YYYY-MM-DDTHH:mm:ss.SSSZ').should.equal('1995-08-09T00:00:00.000-05:00');
         });

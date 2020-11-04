@@ -26,7 +26,7 @@ const Util = require('../util');
 const ModelUtil = require('../modelutil');
 const ValidationException = require('./validationexception');
 const Globalize = require('../globalize');
-const Moment = require('moment-mini');
+// const Moment = require('moment-mini');
 
 /**
  * <p>
@@ -312,7 +312,8 @@ class ResourceValidator {
                 }
                 break;
             case 'DateTime':
-                if(!(Moment.isMoment(obj))) {
+                // if(!(Moment.isMoment(obj))) {
+                if(!(obj instanceof Date)) {
                     invalid = true;
                 }
                 break;

@@ -35,7 +35,7 @@ const EventDeclaration = require('./introspect/eventdeclaration');
 
 const uuid = require('uuid');
 
-const Moment = require('moment-mini');
+// const Moment = require('moment-mini');
 
 /**
  * Use the Factory to create instances of Resource: transactions, participants
@@ -227,7 +227,8 @@ class Factory {
         }
 
         // set the timestamp
-        transaction.timestamp = Moment().utc();
+        // transaction.timestamp = Moment().utc();
+        transaction.timestamp = new Date();
 
         return transaction;
     }
@@ -264,7 +265,8 @@ class Factory {
         }
 
         // set the timestamp
-        event.timestamp = Moment().utc();
+        // event.timestamp = Moment().utc();
+        event.timestamp = new Date();
 
         return event;
     }

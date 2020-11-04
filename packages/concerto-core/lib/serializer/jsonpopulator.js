@@ -21,7 +21,7 @@ const Relationship = require('../model/relationship');
 const Util = require('../util');
 const ModelUtil = require('../modelutil');
 const ValidationException = require('./validationexception');
-const Moment = require('moment-mini');
+// const Moment = require('moment-mini');
 
 /**
  * Check if a given property name is a system property, e.g. '$class'.
@@ -215,10 +215,15 @@ class JSONPopulator {
 
         switch(field.getType()) {
         case 'DateTime':
-            if (Moment.isMoment(json)) {
+            // if (Moment.isMoment(json)) {
+            //     result = json;
+            // } else {
+            //     result = new Moment.parseZone(json); // this keeps timezone info, new Date does not
+            // }
+            if (json instanceof Date) {
                 result = json;
             } else {
-                result = new Moment.parseZone(json);
+                result = new Date(json);
             }
             break;
         case 'Integer':

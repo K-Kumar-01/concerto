@@ -190,7 +190,9 @@ class JSONGenerator {
             if (this.ergo) {
                 return obj;
             } else {
-                return obj.isUtc() ? obj.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') : obj.format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+                console.log('lalala - ', obj);
+                // return obj.isUtc() ? obj.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') : obj.format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+                return `${obj.getFullYear()}-${('0' + (obj.getMonth()+1)).slice(-2)}-${('0' + obj.getDate()).slice(-2)}`;
             }
         }
         case 'Integer':

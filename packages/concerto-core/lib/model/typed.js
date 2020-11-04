@@ -15,7 +15,7 @@
 'use strict';
 
 const Field = require('../introspect/field');
-const Moment = require('moment-mini');
+// const Moment = require('moment-mini');
 
 /**
  * Object is an instance with a namespace and a type.
@@ -148,7 +148,12 @@ class Typed {
                     } else if (field.getType() === 'Boolean') {
                         this.setPropertyValue(field.getName(), (defaultValue === 'true'));
                     } else if (field.getType() === 'DateTime') {
-                        const dateTime = Moment.parseZone(defaultValue);
+                        // const dateTime = Moment.parseZone(defaultValue);
+                        // this.setPropertyValue(field.getName(), dateTime);
+
+                        // Moment.parseZone turns a date string into a Moment date, preserving the timezone.
+                        // We cannot preserve timezone with JS Date object.
+                        const dateTime = new Date(defaultValue);
                         this.setPropertyValue(field.getName(), dateTime);
                     } else {
                         // following precident set in jsonpopulator.js - if we get this far the field should be an enum
